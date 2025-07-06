@@ -1,0 +1,12 @@
+what build  list of words
+how subject actions places
+randam module
+
+concept 
+
+list -to store groups of words like names actions and places
+random.choice() -to pick one items randomly from a list
+print()-to show the fake headline on screen
+input()-ask to user if they want to another headline 
+while loop-to repeat the process until the user says no
+string concatenation or forward-strings - to from a sentance using selected words
