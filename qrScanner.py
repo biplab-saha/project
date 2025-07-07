@@ -25,7 +25,7 @@ googlePayQr=qrcode.make(googlePayUrl)
 
 #display the Qr code (you may need to install pil/pillow library)
 phonepeQr.show()
-paytmQr.show()
-googlePayQr.show()
+# paytmQr.show()
+# googlePayQr.show()
 
 
