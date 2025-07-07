@@ -54,7 +54,7 @@ def calculate(userInput):
 def main():
     print("---SIMPLE CALCULATOR (Type history, clear or exit)")
     while True:
-        userInput=input("Enter calculator (+ - * /) or command (history, clear or exit = ") 
+        userInput=input("Enter calculator (+ - * /) or command (history, clear or exit )= ") 
         if userInput == 'exit':
             print("Goodbye")
             break
