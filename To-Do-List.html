@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="biplabTodoApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Biplab To-Do App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- AngularJS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #d0f0d0, #f5fff5);
+      font-family: 'Segoe UI', sans-serif;
+      padding: 40px 15px;
+    }
+
+    .todo-container {
+      max-width: 550px;
+      margin: auto;
+      backdrop-filter: blur(10px);
+    }
+
+    .card {
+      border-radius: 16px;
+      border: none;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-header {
+      background: #4caf50;
+      color: white;
+      border-radius: 16px 16px 0 0;
+      text-align: center;
+      padding: 25px 15px;
+    }
+
+    .card-header h3 {
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .todo-item.completed {
+      text-decoration: line-through;
+      color: #888;
+      opacity: 0.6;
+    }
+
+    .btn-success {
+      background-color: #43a047;
+      border-color: #388e3c;
+    }
+
+    .btn-danger {
+      background-color: #f44336;
+      border-color: #d32f2f;
+    }
+
+    .fullscreen-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(76, 175, 80, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 3.5rem;
+      font-weight: bold;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .fullscreen-popup.show {
+      opacity: 1;
+      pointer-events: auto;
+      animation: boomIn 0.6s ease;
+    }
+
+    @keyframes boomIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body ng-controller="BiplabTodoController">
+
+  <!-- Fullscreen Boom Popup -->
+  <div class="fullscreen-popup" id="boomPopup">💥 Boom! Task Added</div>
+
+  <!-- Main To-Do Card -->
+  <div class="container todo-container">
+    <div class="card">
+      <div class="card-header">
+        <h3>📝 Biplab To-Do App</h3>
+      </div>
+
+      <div class="card-body">
+        <form ng-submit="addTask()">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Add a new task" ng-model="newTask" required>
+            <div class="input-group-append">
+              <button class="btn btn-success" type="submit">Add</button>
+            </div>
+          </div>
+        </form>
+
+        <ul class="list-group mt-4">
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+              ng-repeat="task in tasks track by $index"
+              ng-class="{ 'todo-item completed': task.done }">
+            <div>
+              <input type="checkbox" ng-model="task.done" class="mr-2">
+              {{ task.name }}
+            </div>
+            <button class="btn btn-sm btn-danger" ng-click="removeTask($index)">🗑</button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card-footer d-flex justify-content-between text-muted">
+        <span>{{ tasks.length }} task(s)</span>
+        <button class="btn btn-outline-secondary btn-sm" ng-click="clearCompleted()">Clear Completed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AngularJS Logic -->
+  <script>
+    angular.module('biplabTodoApp', [])
+      .controller('BiplabTodoController', function($scope, $timeout) {
+        $scope.tasks = [];
+
+        $scope.addTask = function() {
+          if ($scope.newTask) {
+            $scope.tasks.push({ name: $scope.newTask, done: false });
+            $scope.newTask = "";
+
+            const popup = document.getElementById("boomPopup");
+            popup.classList.add("show");
+
+            $timeout(() => {
+              popup.classList.remove("show");
+            }, 1500);
+          }
+        };
+
+        $scope.removeTask = function(index) {
+          $scope.tasks.splice(index, 1);
+        };
+
+        $scope.clearCompleted = function() {
+          $scope.tasks = $scope.tasks.filter(task => !task.done);
+        };
+      });
+  </script>
+</body>
+</html>
